@@ -4,7 +4,7 @@ Created on Sat Nov  4 16:11:55 2017
 
 @author: lantm
 """
-# imports necessary modules (numpy and scipy.stats)
+
 import numpy as np
 import scipy.stats as ss
 
@@ -49,3 +49,16 @@ def basket_price_Levy(
     price = M * (ss.norm.cdf(d1) + cp) - strike * (ss.norm.cdf(d2) + cp)
     
     return disc_fac * price[0]
+
+class Basket:
+    vol, weights, cor_m, divr = None, None, None, None
+    
+    def __init__(self, vol, weights, cor_m, divr=0):
+        self.vol = vol
+        self.weights = weights
+        self.cor_m = cor_m
+        self.divr = divr
+    
+    def price_Levy(self, strike, spot, texp, intr=0, cp_sign=1):
+        return basket_price_Levy(strike, spot, self.vol, self.weights, texp, self.cor_m, \
+                                 intr, divr=self.divr, cp_sign=cp_sign)
